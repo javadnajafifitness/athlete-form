@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>فرم ثبت اطلاعات ورزشکار — v5</title>
+<title>فرم ثبت اطلاعات ورزشکار — v6.1</title>
 <style>
 :root {
   --c-bg: #f4f6f9;
@@ -503,7 +503,54 @@ input.invalid {
         <div class="form-group"><label>ضربان قلب استراحت (RHR):</label><input type="number" id="rhr"></div>
         <div class="form-group"><label>فشار خون سیستولیک (اختیاری):</label><input type="number" id="sbp"></div>
         <div class="form-group"><label>فشار خون دیاستولیک (اختیاری):</label><input type="number" id="dbp"></div>
-        <div class="form-group"><label>تعداد روز تمرین در هفته:</label><input type="number" id="train_days"></div>
+        <div class="form-group"><label>تعداد روز تمرین در هفته:</label><input type="number" id="train_days" onchange="onTrainDaysChange()" oninput="onTrainDaysChange()"></div>
+        <div class="form-group"><label>فعالیت تمرینی:</label>
+            <select id="training_activity" onchange="onTrainingActivityChange()">
+                <option value="" selected>انتخاب کنید…</option>
+                <option value="1.2">بدون تمرین منظم</option>
+                <option value="1.375">سبک (۱-۲ جلسه در هفته)</option>
+                <option value="1.55">متوسط (۳-۴ جلسه در هفته)</option>
+                <option value="1.725">سنگین (۵-۶ جلسه در هفته)</option>
+                <option value="1.9">خیلی سنگین (هر روز / دو وقت در روز)</option>
+            </select>
+            <div class="id-hint">🔄 با «تعداد روز تمرین» هم‌گام می‌شود — یکی را پر کنید، دیگری خودکار تنظیم می‌شود.</div>
+        </div>
+        <div class="form-group"><label>مدت هر جلسه تمرین (دقیقه):</label><input type="number" id="session_minutes" placeholder="مثلاً ۶۰"></div>
+        <div class="form-group"><label>شغل:</label><input type="text" id="job" placeholder="مثلاً: کارمند اداری، راننده، معلم، پرستار"></div>
+        <div class="form-group"><label>سطح فعالیت روزانه و شغلی:</label>
+            <select id="job_activity">
+                <option value="" selected>انتخاب کنید…</option>
+                <option value="1.2">بی‌تحرک — کار پشت میز، فعالیت روزمره کم</option>
+                <option value="1.4">سبک — کارمند، دانشجو، راننده</option>
+                <option value="1.6">متوسط — فروشنده، خانه‌دار، پرستار</option>
+                <option value="1.85">سنگین — کارگر کارخانه، کشاورز</option>
+                <option value="2.15">بسیار سنگین — کارگر ساختمانی، معدنکار</option>
+            </select>
+        </div>
+        <div class="form-group"><label>رشته ورزشی:</label>
+            <select id="sport_discipline" onchange="onSportChange()">
+                <option value="" selected>انتخاب کنید…</option>
+                <option value="general">بدون رشته خاص / عمومی</option>
+                <option value="power_explosive">بدنسازی، پاورلیفتینگ، وزنه‌برداری</option>
+                <option value="aesthetic">پرورش اندام، فیگور و فیتنس</option>
+                <option value="intermittent_mixed">فوتبال، فوتسال، والیبال، بسکتبال، کراس‌فیت</option>
+                <option value="glycolytic_power">کشتی، جودو، بوکس، کیک‌بوکسینگ، دوهای سرعت</option>
+                <option value="endurance">دو استقامتی، شنا، دوچرخه‌سواری، کوهنوردی</option>
+                <option value="skill_precision">تیراندازی، گلف، بیلیارد، شطرنج، تایچی</option>
+            </select>
+        </div>
+        <div class="form-group" id="sport_other_wrap" style="display:none;"><label>نام دقیق رشته (اختیاری):</label><input type="text" id="sport_other" placeholder="مثلاً: تنیس، اسکواش، ژیمناستیک"></div>
+        <div class="form-group"><label>سطح ورزشکار:</label>
+            <select id="athlete_level_v">
+                <option value="" selected>انتخاب کنید…</option>
+                <option value="recreational">مبتدی / تفریحی</option>
+                <option value="intermediate">متوسط</option>
+                <option value="advanced">پیشرفته</option>
+                <option value="pro">حرفه‌ای</option>
+            </select>
+        </div>
+        <div class="form-group"><label>آمادگی فعلی (اختیاری):</label><input type="text" id="readiness_note" placeholder="مثلاً: انرژی خوب، خواب کافی، کمی خسته از تمرین دیروز"></div>
+        <div class="form-group"><label>وضعیت ریکاوری (اختیاری):</label><input type="text" id="recovery_note" placeholder="مثلاً: عضلات پا هنوز کوفتگی دارد، خواب شب‌ها کم است"></div>
 
         <div id="female_fields" style="display:none;">
             <div class="section-title female-title">۲. اطلاعات هورمونی (مخصوص بانوان)</div>
@@ -559,9 +606,76 @@ input.invalid {
             </div>
         </div>
 
+        <div class="section-title">۴. پایش قلبی-عروقی (علائم و سابقه)</div>
+        <div class="form-group"><label>علائم هنگام فعالیت شدید:</label>
+            <select id="cardiac_symptom">
+                <option value="" selected>انتخاب کنید…</option>
+                <option value="none">هیچ‌کدام</option>
+                <option value="chest_pain">درد یا فشار قفسه سینه</option>
+                <option value="dizziness">سرگیجه یا نزدیک به غش</option>
+                <option value="breathless">تنگی نفس غیرعادی</option>
+                <option value="palpitation">تپش قلب نامنظم</option>
+                <option value="multi">بیش از یکی</option>
+            </select>
+            <div class="id-hint">ضربان استراحت (RHR) و فشار خون در بخش ۱ پر می‌شوند.</div>
+        </div>
+        <div class="form-group"><label>سابقه بیماری قلبی در بستگان درجه یک:</label>
+            <select id="cardiac_family">
+                <option value="" selected>انتخاب کنید…</option>
+                <option value="no">خیر</option>
+                <option value="yes">بله</option>
+                <option value="unknown">نمی‌دانم</option>
+            </select>
+        </div>
+        <div class="form-group"><label>مصرف داروی قلبی یا فشار خون:</label>
+            <select id="cardiac_meds">
+                <option value="" selected>انتخاب کنید…</option>
+                <option value="no">خیر</option>
+                <option value="yes">بله</option>
+            </select>
+        </div>
+        <div class="form-group"><label>محدودیت فعالیت توسط پزشک:</label>
+            <select id="cardiac_doctor">
+                <option value="" selected>انتخاب کنید…</option>
+                <option value="no">خیر</option>
+                <option value="limited">بله — با دستور مشخص</option>
+                <option value="banned">بله — ممنوعیت کلی</option>
+                <option value="unchecked">هنوز بررسی نشده</option>
+            </select>
+        </div>
+        <div class="form-group"><label>توضیح قلبی (اختیاری):</label><input type="text" id="cardiac_note" placeholder="مثلاً: پزشک هوازی متوسط را تأیید کرده، فقط شدت بالا ممنوع"></div>
+
+        <div class="section-title">۵. ارزیابی تعادل عضلانی (خوداظهاری)</div>
+        <div class="form-group"><label>عدم تقارن ظاهری بین چپ و راست:</label>
+            <select id="asymmetry">
+                <option value="" selected>انتخاب کنید…</option>
+                <option value="none">خیر، تقارن دارم</option>
+                <option value="left">بله — سمت چپ کوچک‌تر / ضعیف‌تر است</option>
+                <option value="right">بله — سمت راست کوچک‌تر / ضعیف‌تر است</option>
+                <option value="unknown">مطمئن نیستم</option>
+            </select>
+        </div>
+        <div class="form-group"><label>ناحیه عدم تقارن (اختیاری):</label><input type="text" id="asymmetry_area" placeholder="مثلاً: بازو چپ، سینه راست، ران چپ"></div>
+        <div class="form-group"><label>درد یا مشکل مفصلی-عضلانی فعلی:</label>
+            <select id="pain_joint">
+                <option value="" selected>انتخاب کنید…</option>
+                <option value="none">خیر</option>
+                <option value="lower_back">کمر</option>
+                <option value="hip">لگن / ران</option>
+                <option value="knee">زانو</option>
+                <option value="shoulder">شانه</option>
+                <option value="wrist">مچ دست</option>
+                <option value="ankle">مچ پا</option>
+                <option value="neck">گردن</option>
+                <option value="other">ناحیه دیگر</option>
+            </select>
+        </div>
+        <div class="form-group"><label>توضیح تعادل عضلانی (اختیاری):</label><input type="text" id="balance_note" placeholder="مثلاً: پارگی رباط صلیبی ۲ سال قبل زانو راست، کوفتگی مزمن شانه چپ"></div>
+        <div class="id-hint">این بخش مکمل ارزیابی جامع تعادل عضلانی است</div>
+
         <div class="send-wrap">
             <div class="send-menu" id="send-menu">
-                <button onclick="sendForm('share')"><span class="dot dot-share"></span> ارسال یکپارچه (پیشنهادی)</button>
+                <button onclick="sendForm('share')"><span class="dot dot-share"></span> ارسال مستقیم به مربی (پیشنهادی)</button>
                 <button onclick="sendForm('whatsapp')"><span class="dot dot-wa"></span> ارسال در واتساپ</button>
                 <button onclick="sendForm('telegram')"><span class="dot dot-tg"></span> ارسال در تلگرام</button>
                 <button onclick="sendForm('bale')"><span class="dot dot-bale"></span> ارسال در بله</button>
@@ -755,6 +869,49 @@ input.invalid {
         return ID_PREFIX + slug;
     }
 
+    /* ============================================================
+       v6 — هم‌گام‌سازی «تعداد روز تمرین» ↔ «فعالیت تمرینی»
+       ============================================================ */
+    const ACT_TD = { '1.2': 0, '1.375': 2, '1.55': 4, '1.725': 5, '1.9': 7 };
+    const JOB_ACT_LABEL = { '1.2': 'بی‌تحرک', '1.4': 'سبک', '1.6': 'متوسط', '1.85': 'سنگین', '2.15': 'بسیار سنگین' };
+    const SPORT_LABEL = { general: 'عمومی', power_explosive: 'قدرت/توان', aesthetic: 'زیبایی‌محور', intermittent_mixed: 'متناوب', glycolytic_power: 'توان بی‌هوازی', endurance: 'استقامتی', skill_precision: 'مهارت‌محور' };
+    const LEVEL_LABEL = { recreational: 'مبتدی/تفریحی', intermediate: 'متوسط', advanced: 'پیشرفته', pro: 'حرفه‌ای' };
+    const TRAIN_LABEL = { '1.2': 'بدون تمرین', '1.375': 'سبک', '1.55': 'متوسط', '1.725': 'سنگین', '1.9': 'خیلی سنگین' };
+    const CARDIAC_SYMPTOM = { none: 'هیچ‌کدام', chest_pain: 'درد/فشار قفسه سینه', dizziness: 'سرگیجه/نزدیک به غش', breathless: 'تنگی نفس غیرعادی', palpitation: 'تپش قلب نامنظم', multi: 'بیش از یکی' };
+    const CARDIAC_DOCTOR = { no: 'خیر', limited: 'بله — با دستور مشخص', banned: 'بله — ممنوعیت کلی', unchecked: 'هنوز بررسی نشده' };
+    const YES_NO = { no: 'خیر', yes: 'بله', unknown: 'نمی‌دانم' };
+    const PAIN_JOINT = { none: 'خیر', lower_back: 'کمر', hip: 'لگن / ران', knee: 'زانو', shoulder: 'شانه', wrist: 'مچ دست', ankle: 'مچ پا', neck: 'گردن', other: 'ناحیه دیگر' };
+    const ASYM_LABEL = { none: 'تقارن دارد', left: 'چپ ضعیف‌تر/کوچک‌تر', right: 'راست ضعیف‌تر/کوچک‌تر', unknown: 'مطمئن نیست' };
+    let __syncing = false;
+    function tdToActivity(n) {
+        n = parseInt(n) || 0;
+        if (n <= 0) return '1.2';
+        if (n <= 2) return '1.375';
+        if (n <= 4) return '1.55';
+        if (n <= 6) return '1.725';
+        return '1.9';
+    }
+    function onTrainDaysChange() {
+        if (__syncing) return;
+        const a = tdToActivity(document.getElementById('train_days').value);
+        __syncing = true;
+        document.getElementById('training_activity').value = a;
+        __syncing = false;
+    }
+    function onTrainingActivityChange() {
+        if (__syncing) return;
+        const a = document.getElementById('training_activity').value;
+        if (!a) return;
+        __syncing = true;
+        document.getElementById('train_days').value = ACT_TD[a];
+        __syncing = false;
+    }
+    function onSportChange() {
+        const s = document.getElementById('sport_discipline').value;
+        const w = document.getElementById('sport_other_wrap');
+        if (w) w.style.display = (s === 'general') ? '' : 'none';
+    }
+
     function buildPayload() {
         const now = new Date();
         // Shamsi date via Intl
@@ -765,8 +922,8 @@ input.invalid {
             shamsi = now.toLocaleDateString('fa-IR');
         }
         const payload = {
-            schema: 'athlete_form_v5',
-            version: '5.0',
+            schema: 'athlete_form_v6',
+            version: '6.1',
             athlete_id: getAthleteId(),
             form_number: 'AF-' + now.getFullYear() +
                          String(now.getMonth()+1).padStart(2,'0') +
@@ -795,6 +952,30 @@ input.invalid {
                 hip: val('hip'),
                 thigh: val('thigh'),
                 calf: val('calf')
+            },
+            fields_lifestyle: {
+                job: val('job'),
+                job_activity: val('job_activity'),
+                sport: val('sport_discipline'),
+                sport_other: val('sport_other'),
+                athlete_level: val('athlete_level_v'),
+                training_activity: val('training_activity'),
+                session_minutes: val('session_minutes'),
+                readiness_note: val('readiness_note'),
+                recovery_note: val('recovery_note')
+            },
+            fields_cardiac: {
+                symptom: val('cardiac_symptom'),
+                family: val('cardiac_family'),
+                meds: val('cardiac_meds'),
+                doctor_limit: val('cardiac_doctor'),
+                note: val('cardiac_note')
+            },
+            fields_balance: {
+                asymmetry: val('asymmetry'),
+                asymmetry_area: val('asymmetry_area'),
+                pain_joint: val('pain_joint'),
+                note: val('balance_note')
             }
         };
         if (gender === 'female') {
@@ -826,6 +1007,33 @@ input.invalid {
         L.push('❤️ RHR: ' + (payload.fields.rhr || '—'));
         L.push('🩸 فشار خون: ' + (payload.fields.sbp || '—') + '/' + (payload.fields.dbp || '—'));
         L.push('🗓️ روز تمرین/هفته: ' + (payload.fields.train_days || '—'));
+        const fl = payload.fields_lifestyle || {};
+        if (fl.training_activity) L.push('🏋️ فعالیت تمرینی: ' + (TRAIN_LABEL[fl.training_activity] || fl.training_activity));
+        if (fl.job) L.push('💼 شغل: ' + fl.job);
+        if (fl.job_activity) L.push('🚶 سطح فعالیت روزانه: ' + (JOB_ACT_LABEL[fl.job_activity] || fl.job_activity));
+        if (fl.sport) { let sl = (SPORT_LABEL[fl.sport] || fl.sport); if (fl.sport_other) sl += ' — ' + fl.sport_other; L.push('🏅 رشته ورزشی: ' + sl); }
+        if (fl.athlete_level) L.push('📈 سطح ورزشکار: ' + (LEVEL_LABEL[fl.athlete_level] || fl.athlete_level));
+        if (fl.readiness_note) L.push('⚡ آمادگی: ' + fl.readiness_note);
+        if (fl.recovery_note) L.push('🔄 ریکاوری: ' + fl.recovery_note);
+        const fc = payload.fields_cardiac || {};
+        if (fc.symptom || fc.family || fc.meds || fc.doctor_limit || fc.note) {
+            L.push('———————————————');
+            L.push('❤️ پایش قلبی-عروقی:');
+            if (fc.symptom) L.push('• علائم حین فعالیت: ' + (CARDIAC_SYMPTOM[fc.symptom] || fc.symptom));
+            if (fc.family) L.push('• سابقه خانوادگی قلبی: ' + (YES_NO[fc.family] || fc.family));
+            if (fc.meds) L.push('• داروی قلبی/فشار: ' + (YES_NO[fc.meds] || fc.meds));
+            if (fc.doctor_limit) L.push('• محدودیت پزشکی: ' + (CARDIAC_DOCTOR[fc.doctor_limit] || fc.doctor_limit));
+            if (fc.note) L.push('• توضیح: ' + fc.note);
+        }
+        const fb = payload.fields_balance || {};
+        if (fb.asymmetry || fb.asymmetry_area || fb.pain_joint || fb.note) {
+            L.push('———————————————');
+            L.push('⚖️ تعادل عضلانی (خوداظهاری):');
+            if (fb.asymmetry) { let al = (ASYM_LABEL[fb.asymmetry] || fb.asymmetry); if (fb.asymmetry_area) al += ' — ' + fb.asymmetry_area; L.push('• عدم تقارن: ' + al); }
+            else if (fb.asymmetry_area) L.push('• عدم تقارن: نامشخص — ' + fb.asymmetry_area);
+            if (fb.pain_joint) L.push('• درد/مشکل فعال: ' + (PAIN_JOINT[fb.pain_joint] || fb.pain_joint));
+            if (fb.note) L.push('• توضیح: ' + fb.note);
+        }
         if (gender === 'female' && payload.fields_hormonal) {
             L.push('———————————————');
             L.push('🌸 فاز چرخه: ' + payload.fields_hormonal.cycle);
@@ -845,14 +1053,14 @@ input.invalid {
         L.push('• ران: ' + (payload.fields.thigh || '—'));
         L.push('• ساق: ' + (payload.fields.calf || '—'));
         L.push('———————————————');
-        L.push('📦 کد زیر را کپی کرده و در کادر «جایگذاری داده فرم» در');
-        L.push('محاسبه‌گر پیست کنید تا اطلاعات خودکار وارد شود:');
-        L.push('');
-        L.push(encoded);
-        L.push('');
+        L.push('💡 راهنمای مربی: می‌توانید کل پیام را کپی و در کادر «جایگذاری داده فرم» محاسبه‌گر پیست کنید — کد خودکار استخراج می‌شود.');
         if (payload.photo) {
             L.push('📷 عکس بدن به‌صورت فایل جداگانه ضمیمه شده است.');
         }
+        L.push('———————————————');
+        L.push('⬇️ کد اطلاعات فرم (انتهای پیام):');
+        L.push('');
+        L.push(encoded);
         return L.join('\n');
     }
 
@@ -917,41 +1125,47 @@ input.invalid {
             lastPhotoFile = null;
         }
 
-        // Try Web Share API (preferred — one tap)
-        const shareData = {
-            title: 'فرم ورزشکار ' + payload.athlete_id,
-            text: text
-        };
-        if (photoFile && navigator.canShare && navigator.canShare({files: [photoFile]})) {
-            shareData.files = [photoFile];
-        }
-        if (navigator.canShare && navigator.canShare(shareData)) {
-            navigator.share(shareData).then(() => {
-                showSuccess();
-            }).catch((err) => {
-                console.log('share cancelled:', err);
-                // Fallback: open messenger with text + download photo file if needed
-                if (photoFile) downloadFile(photoFile, photoFile.name);
-                openMessenger(platform, text);
-                showSuccess();
-            });
-            return;
-        }
+        // ارسال فقط به خط ذخیره‌شده مربی (WHATSAPP_NUMBER / TELEGRAM_ID / BALE_ID)
+        // Web Share API عمداً حذف شد — با آن ورزشکار هر چت/برنامه‌ای را انتخاب می‌کرد
+        // و پیام به خط اشتباه مربی می‌رفت. حالا همیشه چت مستقیم مربی باز می‌شود.
+        copyTextToClipboard(text); // پشتیبان: در تلگرام/بله متن پیش‌پر نمی‌شود — ورزشکار فقط پیست و ارسال می‌کند
 
-        // Fallback: open messenger with text
-        if (platform === 'whatsapp' || platform === 'telegram' || platform === 'bale') {
-            openMessenger(platform, text);
-        } else {
-            // 'share' but no Web Share API — open WhatsApp as default
-            openMessenger('whatsapp', text);
-        }
+        const target = (platform === 'whatsapp' || platform === 'telegram' || platform === 'bale') ? platform : 'whatsapp';
+        openMessenger(target, text);
+
         if (photoFile) {
             downloadFile(photoFile, photoFile.name);
-            setTimeout(function() {
-                alert('✅ کد فرم در پیام‌رسان آماده ارسال است.\n\nدر صورت وجود عکس، فایل JSON با عکس نیز دانلود شد — آن را به‌صورت جداگانه برای مربی بفرستید.');
-            }, 600);
         }
         showSuccess();
+
+        if (photoFile) {
+            setTimeout(function() {
+                alert('✅ چت مربی باز شد و متن فرم آماده است.\n\nدر صورت وجود عکس، فایل JSON با عکس نیز دانلود شد — آن را به‌صورت جداگانه در همان چت برای مربی بفرستید.');
+            }, 600);
+        } else if (target !== 'whatsapp') {
+            setTimeout(function() {
+                alert('✅ چت مربی باز شد و متن فرم هم در حافظه کپی شد.\nدر کادر پیام پیست کنید و ارسال بزنید.');
+            }, 600);
+        }
+    }
+
+    // کپی متن دلخواه در حافظه (با fallback برای مرورگرهای قدیمی)
+    function copyTextToClipboard(text) {
+        const fallback = function() {
+            const ta = document.createElement('textarea');
+            ta.value = text;
+            ta.style.position = 'fixed';
+            ta.style.opacity = '0';
+            document.body.appendChild(ta);
+            ta.select();
+            try { document.execCommand('copy'); } catch(e) {}
+            document.body.removeChild(ta);
+        };
+        if (navigator.clipboard && navigator.clipboard.writeText) {
+            navigator.clipboard.writeText(text).catch(fallback);
+        } else {
+            fallback();
+        }
     }
 
     function downloadFile(fileObj, fileName) {
