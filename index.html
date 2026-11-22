@@ -679,8 +679,12 @@ input.invalid {
                 <button onclick="sendForm('whatsapp')"><span class="dot dot-wa"></span> ارسال در واتساپ</button>
                 <button onclick="sendForm('telegram')"><span class="dot dot-tg"></span> ارسال در تلگرام</button>
                 <button onclick="sendForm('bale')"><span class="dot dot-bale"></span> ارسال در بله</button>
+                <button onclick="sendForm('code')"><span class="dot dot-share" style="background:#0891b2;"></span> 📎 کپی فقط کد (کوتاه)</button>
             </div>
             <button class="btn-send" onclick="toggleMenu()">📤 ارسال فرم</button>
+        </div>
+        <div class="id-hint" style="margin-top:6px; text-align:right;">
+            💡 «کپی فقط کد» پیام کوتاه‌تری (~نصف) می‌دهد و مناسب است وقتی پیام‌رسان طول پیام را محدود می‌کند. در هر دو حالت، تمام اطلاعات فرم به مربی می‌رسد.
         </div>
     </div>
 
@@ -689,7 +693,7 @@ input.invalid {
         <div class="success-title">فرم ارسال شد</div>
         <div class="success-text">
             اطلاعات شما با کد شناسایی <strong id="success_id">—</strong> در پیام‌رسان آماده ارسال است.<br>
-            <small style="color:var(--c-muted);">اگر پیام باز نشد، کد زیر را کپی و دستی بفرستید:</small>
+            <small style="color:var(--c-muted);">اگر پیام باز نشد یا پیام‌رسان دیگری استفاده می‌کنید، کد زیر را کپی و در هر پیام‌رسانی پیست کنید:</small>
         </div>
         <div style="background:var(--c-surface-2); border:1px solid var(--c-border-strong); border-radius:8px; padding:10px; margin:10px 0; text-align:left; direction:ltr; font-family:monospace; font-size:10px; max-height:90px; overflow-y:auto; word-break:break-all;" id="success_encoded">—</div>
         <div class="success-actions">
@@ -702,7 +706,10 @@ input.invalid {
     </div>
 </div>
 
-<script>
+<script>/* LZ-string 1.5.0 (public domain, pieroxy.net) — official minified */
+var LZString=function(){var r=String.fromCharCode,o="ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/=",n="ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+-$",e={};function t(r,o){if(!e[r]){e[r]={};for(var n=0;n<r.length;n++)e[r][r.charAt(n)]=n}return e[r][o]}var i={compressToBase64:function(r){if(null==r)return"";var n=i._compress(r,6,function(r){return o.charAt(r)});switch(n.length%4){default:case 0:return n;case 1:return n+"===";case 2:return n+"==";case 3:return n+"="}},decompressFromBase64:function(r){return null==r?"":""==r?null:i._decompress(r.length,32,function(n){return t(o,r.charAt(n))})},compressToUTF16:function(o){return null==o?"":i._compress(o,15,function(o){return r(o+32)})+" "},decompressFromUTF16:function(r){return null==r?"":""==r?null:i._decompress(r.length,16384,function(o){return r.charCodeAt(o)-32})},compressToUint8Array:function(r){for(var o=i.compress(r),n=new Uint8Array(2*o.length),e=0,t=o.length;e<t;e++){var s=o.charCodeAt(e);n[2*e]=s>>>8,n[2*e+1]=s%256}return n},decompressFromUint8Array:function(o){if(null==o)return i.decompress(o);for(var n=new Array(o.length/2),e=0,t=n.length;e<t;e++)n[e]=256*o[2*e]+o[2*e+1];var s=[];return n.forEach(function(o){s.push(r(o))}),i.decompress(s.join(""))},compressToEncodedURIComponent:function(r){return null==r?"":i._compress(r,6,function(r){return n.charAt(r)})},decompressFromEncodedURIComponent:function(r){return null==r?"":""==r?null:(r=r.replace(/ /g,"+"),i._decompress(r.length,32,function(o){return t(n,r.charAt(o))}))},compress:function(o){return i._compress(o,16,function(o){return r(o)})},_compress:function(r,o,n){if(null==r)return"";var e,t,i,s={},u={},a="",p="",c="",l=2,f=3,h=2,d=[],m=0,v=0;for(i=0;i<r.length;i+=1)if(a=r.charAt(i),Object.prototype.hasOwnProperty.call(s,a)||(s[a]=f++,u[a]=!0),p=c+a,Object.prototype.hasOwnProperty.call(s,p))c=p;else{if(Object.prototype.hasOwnProperty.call(u,c)){if(c.charCodeAt(0)<256){for(e=0;e<h;e++)m<<=1,v==o-1?(v=0,d.push(n(m)),m=0):v++;for(t=c.charCodeAt(0),e=0;e<8;e++)m=m<<1|1&t,v==o-1?(v=0,d.push(n(m)),m=0):v++,t>>=1}else{for(t=1,e=0;e<h;e++)m=m<<1|t,v==o-1?(v=0,d.push(n(m)),m=0):v++,t=0;for(t=c.charCodeAt(0),e=0;e<16;e++)m=m<<1|1&t,v==o-1?(v=0,d.push(n(m)),m=0):v++,t>>=1}0==--l&&(l=Math.pow(2,h),h++),delete u[c]}else for(t=s[c],e=0;e<h;e++)m=m<<1|1&t,v==o-1?(v=0,d.push(n(m)),m=0):v++,t>>=1;0==--l&&(l=Math.pow(2,h),h++),s[p]=f++,c=String(a)}if(""!==c){if(Object.prototype.hasOwnProperty.call(u,c)){if(c.charCodeAt(0)<256){for(e=0;e<h;e++)m<<=1,v==o-1?(v=0,d.push(n(m)),m=0):v++;for(t=c.charCodeAt(0),e=0;e<8;e++)m=m<<1|1&t,v==o-1?(v=0,d.push(n(m)),m=0):v++,t>>=1}else{for(t=1,e=0;e<h;e++)m=m<<1|t,v==o-1?(v=0,d.push(n(m)),m=0):v++,t=0;for(t=c.charCodeAt(0),e=0;e<16;e++)m=m<<1|1&t,v==o-1?(v=0,d.push(n(m)),m=0):v++,t>>=1}0==--l&&(l=Math.pow(2,h),h++),delete u[c]}else for(t=s[c],e=0;e<h;e++)m=m<<1|1&t,v==o-1?(v=0,d.push(n(m)),m=0):v++,t>>=1;0==--l&&(l=Math.pow(2,h),h++)}for(t=2,e=0;e<h;e++)m=m<<1|1&t,v==o-1?(v=0,d.push(n(m)),m=0):v++,t>>=1;for(;;){if(m<<=1,v==o-1){d.push(n(m));break}v++}return d.join("")},decompress:function(r){return null==r?"":""==r?null:i._decompress(r.length,32768,function(o){return r.charCodeAt(o)})},_decompress:function(o,n,e){var t,i,s,u,a,p,c,l=[],f=4,h=4,d=3,m="",v=[],g={val:e(0),position:n,index:1};for(t=0;t<3;t+=1)l[t]=t;for(s=0,a=Math.pow(2,2),p=1;p!=a;)u=g.val&g.position,g.position>>=1,0==g.position&&(g.position=n,g.val=e(g.index++)),s|=(u>0?1:0)*p,p<<=1;switch(s){case 0:for(s=0,a=Math.pow(2,8),p=1;p!=a;)u=g.val&g.position,g.position>>=1,0==g.position&&(g.position=n,g.val=e(g.index++)),s|=(u>0?1:0)*p,p<<=1;c=r(s);break;case 1:for(s=0,a=Math.pow(2,16),p=1;p!=a;)u=g.val&g.position,g.position>>=1,0==g.position&&(g.position=n,g.val=e(g.index++)),s|=(u>0?1:0)*p,p<<=1;c=r(s);break;case 2:return""}for(l[3]=c,i=c,v.push(c);;){if(g.index>o)return"";for(s=0,a=Math.pow(2,d),p=1;p!=a;)u=g.val&g.position,g.position>>=1,0==g.position&&(g.position=n,g.val=e(g.index++)),s|=(u>0?1:0)*p,p<<=1;switch(c=s){case 0:for(s=0,a=Math.pow(2,8),p=1;p!=a;)u=g.val&g.position,g.position>>=1,0==g.position&&(g.position=n,g.val=e(g.index++)),s|=(u>0?1:0)*p,p<<=1;l[h++]=r(s),c=h-1,f--;break;case 1:for(s=0,a=Math.pow(2,16),p=1;p!=a;)u=g.val&g.position,g.position>>=1,0==g.position&&(g.position=n,g.val=e(g.index++)),s|=(u>0?1:0)*p,p<<=1;l[h++]=r(s),c=h-1,f--;break;case 2:return v.join("")}if(0==f&&(f=Math.pow(2,d),d++),l[c])m=l[c];else{if(c!==h)return null;m=i+i.charAt(0)}v.push(m),l[h++]=i+m.charAt(0),i=m,0==--f&&(f=Math.pow(2,d),d++)}}};return i}();"function"==typeof define&&define.amd?define(function(){return LZString}):"undefined"!=typeof module&&null!=module?module.exports=LZString:"undefined"!=typeof angular&&null!=angular&&angular.module("LZString",[]).factory("LZString",function(){return LZString});
+</script>
+    <script>
     /* ============================================================
        ⚙️ تنظیمات مربی (ADMIN SETTINGS)
        PHOTO_UPLOAD_ENABLED:
@@ -1053,7 +1060,7 @@ input.invalid {
         L.push('• ران: ' + (payload.fields.thigh || '—'));
         L.push('• ساق: ' + (payload.fields.calf || '—'));
         L.push('———————————————');
-        L.push('💡 راهنمای مربی: می‌توانید کل پیام را کپی و در کادر «جایگذاری داده فرم» محاسبه‌گر پیست کنید — کد خودکار استخراج می‌شود.');
+        L.push('💡 راهنمای مربی: می‌توانید کل پیام را کپی و در کادر «جایگذاری داده فرم» سامانه پیست کنید — کد خودکار استخراج می‌شود.');
         if (payload.photo) {
             L.push('📷 عکس بدن به‌صورت فایل جداگانه ضمیمه شده است.');
         }
@@ -1071,12 +1078,31 @@ input.invalid {
        The base64 string is URL-safe and short enough for any messenger.
        Photo (if any) is sent separately as a file attachment.
        ============================================================ */
+    // v6.1 — فشرده‌سازی کد: کوتاه‌سازی کلیدها + LZ-string + base64
+    // خروجی: ATF2|<compressed>  (در صورت نبود LZString: fallback به ATF1|)
+    const KEY_MAP = {'schema':'s', 'version':'v', 'athlete_id':'a', 'form_number':'fn', 'submitted_at':'st', 'submitted_at_shamsi':'ss', 'gender':'g', 'fields':'f', 'fields_lifestyle':'fl', 'fields_balance':'fb', 'fields_hormonal':'fh', 'photo':'p'};
+    const SUB_FIELDS = {'name':'n', 'phone':'p', 'age':'a', 'height':'h', 'weight':'w', 'rhr':'r', 'sbp':'sb', 'dbp':'db', 'neck':'nk', 'waist':'wa', 'hip':'hp', 'chest':'ch', 'arm':'ar', 'forearm':'fa', 'abdomen':'ab', 'thigh':'th', 'calf':'ca', 'train_days':'td', 'training_activity':'ta', 'job':'j', 'job_activity':'ja', 'sport':'sp', 'sport_other':'so', 'athlete_level':'al', 'session_minutes':'sm', 'readiness_note':'rn', 'recovery_note':'rc', 'cardiac_symptom':'cs', 'cardiac_family':'cf', 'cardiac_meds':'cm', 'cardiac_doctor':'cd', 'cardiac_note':'cn', 'asymmetry':'as', 'asymmetry_area':'aa', 'pain_joint':'pj', 'note':'nt', 'cycle':'cy', 'menarche':'me', 'menopause':'mo', 'lactation':'la'};
+    function shortenKeys(obj, map) {
+        if (!obj || typeof obj !== 'object') return obj;
+        const out = Array.isArray(obj) ? [] : {};
+        for (let k in obj) {
+            if (!Object.prototype.hasOwnProperty.call(obj, k)) continue;
+            const nk = map[k] || k;
+            out[nk] = shortenKeys(obj[k], (k === 'fields' || k === 'f') ? SUB_FIELDS : {});
+        }
+        return out;
+    }
     function encodePayload(payload) {
-        // Strip photo to keep string short
         const stripped = Object.assign({}, payload);
         delete stripped.photo;
-        const json = JSON.stringify(stripped);
-        // btoa needs Latin1; use encodeURIComponent trick for full UTF-8
+        const shortPayload = shortenKeys(stripped, KEY_MAP);
+        const json = JSON.stringify(shortPayload);
+        if (typeof LZString !== 'undefined') {
+            try {
+                const comp = LZString.compressToEncodedURIComponent(json);
+                return 'ATF2|' + comp;
+            } catch(e) { /* fallback */ }
+        }
         const b64 = btoa(unescape(encodeURIComponent(json)));
         return 'ATF1|' + b64;
     }
@@ -1111,8 +1137,6 @@ input.invalid {
         lastEncoded = encoded;
         lastAthleteId = payload.athlete_id;
 
-        const text = buildTextMessage(payload, encoded);
-
         // If photo present → also produce a JSON file with photo for attachment
         let photoFile = null;
         if (payload.photo) {
@@ -1124,6 +1148,24 @@ input.invalid {
         } else {
             lastPhotoFile = null;
         }
+
+        // ===== حالت «کپی فقط کد» =====
+        // فقط کد فشردهٔ ATF2|... در حافظه کپی می‌شود (بدون متن قابل‌خواندن طولانی).
+        // کد ATF2 خودش حاوی تمام اطلاعات فرم است و سامانه همه را از همان کد بازسازی می‌کند.
+        // مزیت: پیام بسیار کوتاه‌تر، و ورزشکار فقط یک کد کوتاه را پیست می‌کند.
+        if (platform === 'code') {
+            copyTextToClipboard(encoded);
+            showSuccess();
+            setTimeout(function() {
+                alert('✅ کد فشردهٔ فرم در حافظه کپی شد.\n\nحالا هر پیام‌رسانی را باز کنید (واتساپ/تلگرام/بله) و در کادر پیام، پیست کنید و ارسال بزنید.\n\n💡 این کد کوتاه‌تر از متن کامل است و تمام اطلاعات فرم را در خود دارد.');
+            }, 300);
+            if (photoFile) {
+                downloadFile(photoFile, photoFile.name);
+            }
+            return;
+        }
+
+        const text = buildTextMessage(payload, encoded);
 
         // ارسال فقط به خط ذخیره‌شده مربی (WHATSAPP_NUMBER / TELEGRAM_ID / BALE_ID)
         // Web Share API عمداً حذف شد — با آن ورزشکار هر چت/برنامه‌ای را انتخاب می‌کرد
