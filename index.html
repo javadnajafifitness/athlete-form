@@ -674,20 +674,24 @@ input.invalid {
         <div class="id-hint">این بخش مکمل ارزیابی جامع تعادل عضلانی است</div>
 
         <div class="send-wrap">
-            <button class="btn-send" onclick="analyzeAndCalculate()">🧮 تحلیل و محاسبه</button>
+            <button class="btn-send" onclick="toggleMenu()">📤 ارسال فرم</button>
+            <div class="send-menu" id="send-menu">
+                <button onclick="sendForm('whatsapp')"><span class="dot dot-wa"></span> 📱 واتساپ</button>
+                <button onclick="sendForm('telegram')"><span class="dot dot-tg"></span> ✈️ تلگرام</button>
+                <button onclick="sendForm('bale')"><span class="dot dot-bale"></span> 💬 بله</button>
+            </div>
         </div>
     </div>
 
     <div id="success-screen">
         <div class="success-icon">✅</div>
-        <div class="success-title">فرم آماده تحلیل شد</div>
+        <div class="success-title">فرم ارسال شد</div>
         <div class="success-text">
-            اطلاعات شما با کد شناسایی <strong id="success_id">—</strong> رمزگذاری شد.<br>
-            <small style="color:var(--c-muted);">روی دکمهٔ زیر بزنید تا وارد سامانهٔ تحلیل و محاسبه شوید.</small>
+            فرم شما آماده ارسال به مربی شد.<br>
+            <small style="color:var(--c-muted);">کد شناسایی: <strong id="success_id">—</strong></small>
         </div>
         <div style="background:var(--c-surface-2); border:1px solid var(--c-border-strong); border-radius:8px; padding:10px; margin:10px 0; text-align:left; direction:ltr; font-family:monospace; font-size:10px; max-height:90px; overflow-y:auto; word-break:break-all;" id="success_encoded">—</div>
         <div class="success-actions">
-            <button id="goto_calc_btn" onclick="goToCalculator()">🧮 ورود به سامانهٔ تحلیل و محاسبه</button>
             <button class="secondary" onclick="resetAll()">🔄 پر کردن فرم جدید</button>
         </div>
         <div id="success_photo_note" style="display:none; margin-top:10px; padding:10px; background:var(--c-warn-light); border-right:3px solid var(--c-warn); border-radius:6px; font-size:11px; color:#92400e; text-align:right;">
@@ -1193,31 +1197,6 @@ var LZString=function(){var r=String.fromCharCode,o="ABCDEFGHIJKLMNOPQRSTUVWXYZa
         }
     }
 
-    // === مسیر جدید: تحلیل و محاسبه (به جای ارسال پیام‌رسان) ===
-    // ۱) کد فشردهٔ فرم تولید می‌شود
-    // ۲) کد در sessionStorage ذخیره می‌شود (برای انتقال بین صفحات)
-    // ۳) صفحهٔ موفقیت نمایش داده می‌شود و کاربر با دکمه وارد محاسبه‌گر می‌شود
-    function analyzeAndCalculate() {
-        if (!validateForm()) return;
-        const payload = buildPayload();
-        const encoded = encodePayload(payload);
-        lastEncoded = encoded;
-        lastAthleteId = payload.athlete_id;
-
-        // ذخیرهٔ کد برای انتقال به محاسبه‌گر
-        try {
-            sessionStorage.setItem('atf_pending_code', encoded);
-        } catch(e) {}
-
-        showSuccess();
-    }
-
-    // هدایت به صفحهٔ محاسبه‌گر با کد در hash (پشتیبان sessionStorage)
-    function goToCalculator() {
-        if (!lastEncoded) { alert('کد فرم آماده نیست.'); return; }
-        const calcUrl = 'سامانه ارزیابی و پایش ورزشکار v9.1.html#atf=' + encodeURIComponent(lastEncoded);
-        window.location.href = calcUrl;
-    }
 
     function downloadFile(fileObj, fileName) {
         const url = URL.createObjectURL(fileObj);
