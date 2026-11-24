@@ -674,34 +674,24 @@ input.invalid {
         <div class="id-hint">این بخش مکمل ارزیابی جامع تعادل عضلانی است</div>
 
         <div class="send-wrap">
-            <div class="send-menu" id="send-menu">
-                <button onclick="sendForm('share')"><span class="dot dot-share"></span> ارسال مستقیم به مربی (پیشنهادی)</button>
-                <button onclick="sendForm('whatsapp')"><span class="dot dot-wa"></span> ارسال در واتساپ</button>
-                <button onclick="sendForm('telegram')"><span class="dot dot-tg"></span> ارسال در تلگرام</button>
-                <button onclick="sendForm('bale')"><span class="dot dot-bale"></span> ارسال در بله</button>
-                <button onclick="sendForm('code')"><span class="dot dot-share" style="background:#0891b2;"></span> 📎 کپی فقط کد (کوتاه)</button>
-            </div>
-            <button class="btn-send" onclick="toggleMenu()">📤 ارسال فرم</button>
-        </div>
-        <div class="id-hint" style="margin-top:6px; text-align:right;">
-            💡 «کپی فقط کد» پیام کوتاه‌تری (~نصف) می‌دهد و مناسب است وقتی پیام‌رسان طول پیام را محدود می‌کند. در هر دو حالت، تمام اطلاعات فرم به مربی می‌رسد.
+            <button class="btn-send" onclick="analyzeAndCalculate()">🧮 تحلیل و محاسبه</button>
         </div>
     </div>
 
     <div id="success-screen">
         <div class="success-icon">✅</div>
-        <div class="success-title">فرم ارسال شد</div>
+        <div class="success-title">فرم آماده تحلیل شد</div>
         <div class="success-text">
-            اطلاعات شما با کد شناسایی <strong id="success_id">—</strong> در پیام‌رسان آماده ارسال است.<br>
-            <small style="color:var(--c-muted);">اگر پیام باز نشد یا پیام‌رسان دیگری استفاده می‌کنید، کد زیر را کپی و در هر پیام‌رسانی پیست کنید:</small>
+            اطلاعات شما با کد شناسایی <strong id="success_id">—</strong> رمزگذاری شد.<br>
+            <small style="color:var(--c-muted);">روی دکمهٔ زیر بزنید تا وارد سامانهٔ تحلیل و محاسبه شوید.</small>
         </div>
         <div style="background:var(--c-surface-2); border:1px solid var(--c-border-strong); border-radius:8px; padding:10px; margin:10px 0; text-align:left; direction:ltr; font-family:monospace; font-size:10px; max-height:90px; overflow-y:auto; word-break:break-all;" id="success_encoded">—</div>
         <div class="success-actions">
-            <button id="copy_btn" onclick="copyEncoded()">📋 کپی کد</button>
+            <button id="goto_calc_btn" onclick="goToCalculator()">🧮 ورود به سامانهٔ تحلیل و محاسبه</button>
             <button class="secondary" onclick="resetAll()">🔄 پر کردن فرم جدید</button>
         </div>
         <div id="success_photo_note" style="display:none; margin-top:10px; padding:10px; background:var(--c-warn-light); border-right:3px solid var(--c-warn); border-radius:6px; font-size:11px; color:#92400e; text-align:right;">
-            📷 عکس بدن شما به‌صورت فایل جداگانه (JSON) دانلود شد. لطفاً این فایل را هم برای مربی بفرستید.
+            📷 عکس بدن شما به‌صورت فایل جداگانه (JSON) دانلود شد.
         </div>
     </div>
 </div>
@@ -1149,31 +1139,20 @@ var LZString=function(){var r=String.fromCharCode,o="ABCDEFGHIJKLMNOPQRSTUVWXYZa
             lastPhotoFile = null;
         }
 
-        // ===== حالت «کپی فقط کد» =====
-        // فقط کد فشردهٔ ATF2|... در حافظه کپی می‌شود (بدون متن قابل‌خواندن طولانی).
-        // کد ATF2 خودش حاوی تمام اطلاعات فرم است و سامانه همه را از همان کد بازسازی می‌کند.
-        // مزیت: پیام بسیار کوتاه‌تر، و ورزشکار فقط یک کد کوتاه را پیست می‌کند.
-        if (platform === 'code') {
-            copyTextToClipboard(encoded);
-            showSuccess();
-            setTimeout(function() {
-                alert('✅ کد فشردهٔ فرم در حافظه کپی شد.\n\nحالا هر پیام‌رسانی را باز کنید (واتساپ/تلگرام/بله) و در کادر پیام، پیست کنید و ارسال بزنید.\n\n💡 این کد کوتاه‌تر از متن کامل است و تمام اطلاعات فرم را در خود دارد.');
-            }, 300);
-            if (photoFile) {
-                downloadFile(photoFile, photoFile.name);
-            }
-            return;
-        }
-
         const text = buildTextMessage(payload, encoded);
 
         // ارسال فقط به خط ذخیره‌شده مربی (WHATSAPP_NUMBER / TELEGRAM_ID / BALE_ID)
-        // Web Share API عمداً حذف شد — با آن ورزشکار هر چت/برنامه‌ای را انتخاب می‌کرد
-        // و پیام به خط اشتباه مربی می‌رفت. حالا همیشه چت مستقیم مربی باز می‌شود.
-        copyTextToClipboard(text); // پشتیبان: در تلگرام/بله متن پیش‌پر نمی‌شود — ورزشکار فقط پیست و ارسال می‌کند
+        // برای واتساپ/تلگرام/بله: متن کامل در حافظه کپی می‌شود تا ورزشکار پیست کند
+        // (تلگرام/بله متن را پیش‌پر نمی‌کنند).
+        copyTextToClipboard(text);
 
-        const target = (platform === 'whatsapp' || platform === 'telegram' || platform === 'bale') ? platform : 'whatsapp';
-        openMessenger(target, text);
+        const target = platform; // whatsapp | telegram | bale
+
+        // ⚠ مهم: متن کامل فارسی بعد از URL-encoding سه‌برابر می‌شود و URL از حد مجاز
+        // واتساپ (~۲۰۰۰ کاراکتر) فراتر می‌رود → واتساپ لینک را باز نمی‌کند.
+        // راه‌حل: در URL واتساپ فقط کد کوتاه ATF2 را می‌فرستیم؛ متن کامل در حافظه است.
+        const messengerText = (target === 'whatsapp') ? encoded : text;
+        openMessenger(target, messengerText);
 
         if (photoFile) {
             downloadFile(photoFile, photoFile.name);
@@ -1182,9 +1161,13 @@ var LZString=function(){var r=String.fromCharCode,o="ABCDEFGHIJKLMNOPQRSTUVWXYZa
 
         if (photoFile) {
             setTimeout(function() {
-                alert('✅ چت مربی باز شد و متن فرم آماده است.\n\nدر صورت وجود عکس، فایل JSON با عکس نیز دانلود شد — آن را به‌صورت جداگانه در همان چت برای مربی بفرستید.');
+                alert('✅ چت مربی باز شد و متن فرم آماده است.\n\nدر واتساپ کد کوتاه پیش‌پر شده — فقط «ارسال» را بزنید. در صورت نیاز به متن کامل، آن از حافظه قابل پیست است.\n\nدر صورت وجود عکس، فایل JSON با عکس نیز دانلود شد — آن را به‌صورت جداگانه در همان چت برای مربی بفرستید.');
             }, 600);
-        } else if (target !== 'whatsapp') {
+        } else if (target === 'whatsapp') {
+            setTimeout(function() {
+                alert('✅ چت واتساپ مربی باز شد.\nکد کوتاه فرم در کادر پیام پیش‌پر شده — فقط «ارسال» را بزنید.\n\n💡 تمام اطلاعات فرم در همین کد کوتاه وجود دارد؛ مربی آن را در محاسبه‌گر پیست می‌کند.');
+            }, 600);
+        } else {
             setTimeout(function() {
                 alert('✅ چت مربی باز شد و متن فرم هم در حافظه کپی شد.\nدر کادر پیام پیست کنید و ارسال بزنید.');
             }, 600);
@@ -1208,6 +1191,32 @@ var LZString=function(){var r=String.fromCharCode,o="ABCDEFGHIJKLMNOPQRSTUVWXYZa
         } else {
             fallback();
         }
+    }
+
+    // === مسیر جدید: تحلیل و محاسبه (به جای ارسال پیام‌رسان) ===
+    // ۱) کد فشردهٔ فرم تولید می‌شود
+    // ۲) کد در sessionStorage ذخیره می‌شود (برای انتقال بین صفحات)
+    // ۳) صفحهٔ موفقیت نمایش داده می‌شود و کاربر با دکمه وارد محاسبه‌گر می‌شود
+    function analyzeAndCalculate() {
+        if (!validateForm()) return;
+        const payload = buildPayload();
+        const encoded = encodePayload(payload);
+        lastEncoded = encoded;
+        lastAthleteId = payload.athlete_id;
+
+        // ذخیرهٔ کد برای انتقال به محاسبه‌گر
+        try {
+            sessionStorage.setItem('atf_pending_code', encoded);
+        } catch(e) {}
+
+        showSuccess();
+    }
+
+    // هدایت به صفحهٔ محاسبه‌گر با کد در hash (پشتیبان sessionStorage)
+    function goToCalculator() {
+        if (!lastEncoded) { alert('کد فرم آماده نیست.'); return; }
+        const calcUrl = 'سامانه ارزیابی و پایش ورزشکار v9.1.html#atf=' + encodeURIComponent(lastEncoded);
+        window.location.href = calcUrl;
     }
 
     function downloadFile(fileObj, fileName) {
