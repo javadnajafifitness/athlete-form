@@ -497,13 +497,13 @@ input.invalid {
         <div class="form-group"><label>نام و نام خانوادگی:</label><input type="text" id="name"></div>
         <div class="id-hint" style="margin:-6px 0 10px 0;">🆔 کد شناسایی شما: <strong><span id="id_preview">…</span></strong> — این کد را به یاد داشته باشید.</div>
         <div class="form-group"><label>شماره تماس:</label><input type="tel" id="phone" maxlength="11"></div>
-        <div class="form-group"><label>سن:</label><input type="number" id="age"></div>
-        <div class="form-group"><label>قد (cm):</label><input type="number" id="height"></div>
-        <div class="form-group"><label>وزن (kg):</label><input type="number" id="weight"></div>
-        <div class="form-group"><label>ضربان قلب استراحت (RHR):</label><input type="number" id="rhr"></div>
-        <div class="form-group"><label>فشار خون سیستولیک (اختیاری):</label><input type="number" id="sbp"></div>
-        <div class="form-group"><label>فشار خون دیاستولیک (اختیاری):</label><input type="number" id="dbp"></div>
-        <div class="form-group"><label>تعداد روز تمرین در هفته:</label><input type="number" id="train_days" onchange="onTrainDaysChange()" oninput="onTrainDaysChange()"></div>
+        <div class="form-group"><label>سن:</label><input type="number" id="age" step="any"></div>
+        <div class="form-group"><label>قد (cm):</label><input type="number" id="height" step="any"></div>
+        <div class="form-group"><label>وزن (kg):</label><input type="number" id="weight" step="any"></div>
+        <div class="form-group"><label>ضربان قلب استراحت (RHR):</label><input type="number" id="rhr" step="any"></div>
+        <div class="form-group"><label>فشار خون سیستولیک (اختیاری):</label><input type="number" id="sbp" step="any"></div>
+        <div class="form-group"><label>فشار خون دیاستولیک (اختیاری):</label><input type="number" id="dbp" step="any"></div>
+        <div class="form-group"><label>تعداد روز تمرین در هفته:</label><input type="number" id="train_days" onchange="onTrainDaysChange()" oninput="onTrainDaysChange()" step="any"></div>
         <div class="form-group"><label>فعالیت تمرینی:</label>
             <select id="training_activity" onchange="onTrainingActivityChange()">
                 <option value="" selected>انتخاب کنید…</option>
@@ -515,7 +515,7 @@ input.invalid {
             </select>
             <div class="id-hint">🔄 با «تعداد روز تمرین» هم‌گام می‌شود — یکی را پر کنید، دیگری خودکار تنظیم می‌شود.</div>
         </div>
-        <div class="form-group"><label>مدت هر جلسه تمرین (دقیقه):</label><input type="number" id="session_minutes" placeholder="مثلاً ۶۰"></div>
+        <div class="form-group"><label>مدت هر جلسه تمرین (دقیقه):</label><input type="number" id="session_minutes" placeholder="مثلاً ۶۰" step="any"></div>
         <div class="form-group"><label>شغل:</label><input type="text" id="job" placeholder="مثلاً: کارمند اداری، راننده، معلم، پرستار"></div>
         <div class="form-group"><label>سطح فعالیت روزانه و شغلی:</label>
             <select id="job_activity">
@@ -563,8 +563,8 @@ input.invalid {
                     <option value="لوتئال (روز ۱۵ تا ۲۸)">لوتئال (روز ۱۵ تا ۲۸)</option>
                 </select>
             </div>
-            <div class="form-group"><label>سن شروع قاعدگی:</label><input type="number" id="menarche"></div>
-            <div class="form-group"><label>سن یائسگی (خالی = نرسیده):</label><input type="number" id="menopause"></div>
+            <div class="form-group"><label>سن شروع قاعدگی:</label><input type="number" id="menarche" step="any"></div>
+            <div class="form-group"><label>سن یائسگی (خالی = نرسیده):</label><input type="number" id="menopause" step="any"></div>
             <div class="form-group">
                 <label>وضعیت شیردهی:</label>
                 <select id="lactation">
@@ -576,23 +576,23 @@ input.invalid {
         </div>
 
         <div class="section-title">۳. محیط‌های بدن (سایزها)</div>
-        <div class="form-group"><label>دور گردن (cm):</label><input type="number" id="neck"></div>
-        <div class="form-group"><label>دور سینه (cm):</label><input type="number" id="chest"></div>
-        <div class="form-group"><label>دور بازو (cm):</label><input type="number" id="arm"></div>
-        <div class="form-group"><label>دور ساعد (cm):</label><input type="number" id="forearm"></div>
+        <div class="form-group"><label>دور گردن (cm):</label><input type="number" id="neck" step="any"></div>
+        <div class="form-group"><label>دور سینه (cm):</label><input type="number" id="chest" step="any"></div>
+        <div class="form-group"><label>دور بازو (cm):</label><input type="number" id="arm" step="any"></div>
+        <div class="form-group"><label>دور ساعد (cm):</label><input type="number" id="forearm" step="any"></div>
         <div class="grid-2">
             <div class="form-group" style="flex-direction: column; align-items: flex-start;">
                 <label style="width: 100%; margin-bottom: 5px;">دور کمر (cm):</label>
-                <input type="number" id="waist" style="width: 100%;">
+                <input type="number" id="waist" style="width: 100%;" step="any">
             </div>
             <div class="form-group" style="flex-direction: column; align-items: flex-start;">
                 <label style="width: 100%; margin-bottom: 5px;">دور شکم (cm):</label>
-                <input type="number" id="abdomen" style="width: 100%;">
+                <input type="number" id="abdomen" style="width: 100%;" step="any">
             </div>
         </div>
-        <div class="form-group"><label>دور باسن (cm):</label><input type="number" id="hip"></div>
-        <div class="form-group"><label>دور ران (cm):</label><input type="number" id="thigh"></div>
-        <div class="form-group"><label>دور ساق (cm):</label><input type="number" id="calf"></div>
+        <div class="form-group"><label>دور باسن (cm):</label><input type="number" id="hip" step="any"></div>
+        <div class="form-group"><label>دور ران (cm):</label><input type="number" id="thigh" step="any"></div>
+        <div class="form-group"><label>دور ساق (cm):</label><input type="number" id="calf" step="any"></div>
 
         <!-- photo upload (toggle by coach) -->
         <div class="photo-upload">
